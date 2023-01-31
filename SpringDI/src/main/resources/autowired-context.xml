@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 자동주입 명령 - context의 모듈의 특정 기능이 필요로 하다. -->
+	<context:annotation-config></context:annotation-config>
+	
+	<bean id="doc1" class="ex05.Document"/>
+	<bean id="doc2" class="ex05.Document"/>
+	
+	<!-- bean 태그 사이에 constructor-org 로 작업을 하지 않고 
+	context를 사용하여 Priter.java에서 @Autowired 어노테이션을 선언해주면 자동으로 해결된다. -->
+	<bean id="printer" class="ex05.Printer"/>
+	
+	
+	<bean id="dao" class="ex06.DAO"/>
+	<bean id="service" class="ex06.ServiceImpl"/>
+	<bean id="controller" class="ex06.Controller"/>
+
+</beans>

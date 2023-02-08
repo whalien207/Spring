@@ -11,4 +11,52 @@
  		<!-- 실행시킬 sql문 -->
  		select now()
  	</select>
+ 	
+ 	<!-- select타입은 id와 resultType이 무조건 있어야 한다. 없다면 에러 -->
+ 	<!-- resultType에는 한 행에 대한 타입만 적어주면 된다. -->
+ 	<select id="getScore" resultType="com.simple.command.ScoreVO">
+ 		select * from score
+ 	</select>
+ 	
+ 	<!-- 매개변수 단일값 -->
+ 	<!-- ?로 표시하던 매개변수값을 #{}로 표시한다 
+ 	interface에 기재한 param 변수이름 그대로 {}안에 넣어준다.-->
+ 	<select id="getOne" resultType="com.simple.command.ScoreVO">
+ 		select * from score where num = #{a}
+ 	</select>
+ 	
+ 	<!-- insert는 id만 적어주면된다. 반환받을 것이 없기 때문에 -->
+ 	<!-- parameterType은 생략가능하다. 넘어가는 param의 타입을 기재해 줄 수 있다. -->
+ 	<insert id="insertOne" parameterType="string">
+ 		insert into score(name) values (#{name})
+ 	</insert>
+ 	
+ 	<insert id="insertSetter" parameterType="com.simple.command.ScoreVO">
+ 		insert into score(name, kor, eng)
+ 		values(#{name}, #{kor}, #{eng})
+ 	</insert>
+ 	
+ 	<insert id="insertMap">
+ 		insert into score(name, kor, eng)
+ 		values(#{name}, #{kor}, #{eng})
+ 	</insert>
+ 	
+ 	<select id="selectMap" resultType="map" parameterType="int">
+ 		select * from score where num = #{num}
+ 	</select>
+ 	
+ 	<select id="selectMapList" resultType="map">
+ 		select * from score
+ 	</select>
+ 	
+ 	<!-- alias설정이 잇다면 parameter타입, result타입에 단축명으로 사용가능하다. -->
+ 	<update id="updateOne" parameterType="scorevo">
+ 		update score set name = #{name}, kor = #{kor}, eng = #{eng}
+ 		where num = #{num}
+ 	</update>
+ 	
+ 	<insert id="insertFour">
+ 		insert into score(name, kor) values(#{a}, #{b})
+ 	</insert>
+ 	
  </mapper>

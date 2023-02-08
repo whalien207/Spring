@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simple.command.ScoreVO;
+import com.simple.score.service.ScoreService;
 import com.simple.score.service.ScoreServiceImpl;
 
 @Controller
@@ -27,7 +28,7 @@ public class ServiceController {
 	//의존객체 자동주입
 	@Autowired
 	@Qualifier("이름")
-	ScoreServiceImpl service;
+	ScoreService service;
 	
 	
 	//scoreRegist화면 출력

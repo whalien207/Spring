@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.whalien207.myweb.trip.service.TripMapper"> 
+  	
+  	<insert id="noticeRegist" parameterType="TripVO">
+  		insert into trip(tripdate, writer, title, content)
+  		values(#{tripdate}, #{writer}, #{title}, #{content} )
+  	</insert>
+  	
+  	<select id="getList" resultType="TripVO">
+  		select * from trip order by tno desc
+  	</select>
+  	
+  	<select id="getContent" resultType="TripVO">
+  		select * from trip where tno = #{tno}
+  	</select>
+  	
+  	<update id="noticeModify" parameterType="TripVO">
+  		update trip 
+  		set tripdate = #{tripdate}, title = #{title}, content = #{content} 
+  		where tno = #{tno};
+  	</update>
+  	
+  	<delete id="noticeDelete" parameterType="int">
+  		delete from trip where tno = #{tno}
+  	</delete>
+  	
+  	<update id="upHit">
+  		update trip set hit = hit +1 where tno = #{tno}
+  	</update>
+  	
+  	<select id="getPrevNext" resultType="TripVO">
+  		<!-- 부등호가 태그로 인식되어 발생하는 에러를 제거 해주는 기능 CDATA 
+  		xml or html 에서 부등호는 태그로 인식되는데, CDATA는 순수한 문자열 형태로 인식된다.-->
+  		<![CDATA[
+  		select * from trip 
+		where tno in ((select tno from trip where tno < #{tno} order by tno desc limit 1),
+			  (select tno from trip where tno > #{tno} limit 1))
+		order by tno desc;
+		]]>
+  	</select>
+  	
+  </mapper>

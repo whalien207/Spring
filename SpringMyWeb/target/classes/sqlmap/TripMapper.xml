@@ -10,8 +10,44 @@
   		values(#{tripdate}, #{writer}, #{title}, #{content} )
   	</insert>
   	
-  	<select id="getList" resultType="TripVO">
+<!--   	<select id="getList" resultType="TripVO">
   		select * from trip order by tno desc
+  		limit #{pageStart}, #{amount}
+  	</select> -->
+  	
+  	<!-- 동적쿼리 구문의 test에는 vo의 getter, map의 키값이 들어간다. -->
+  	  <select id="getList" resultType="TripVO">
+  	  	select * from trip
+  	  	
+  	  	<if test="searchType == 'title'">
+  	  		where title like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	<if test="searchType == 'content'">
+  	  		where content like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	<if test="searchType == 'writer'">
+  	  		where writer like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	<if test="searchType == 'titlecont'">
+  	  		where title like concat ('%', #{searchName}, '%')
+  	  		or content like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	
+  	  	<if test="searchType == null or searchType == ''" >where 1 = 1</if> 
+  	  	
+  	  	<!-- <choose>
+         <when test="searchType == 'title'">where title like concat('%', #{searchName}, '%')</when>
+         <when test="searchType == 'content'">where title like concat('%', #{searchName}, '%')</when>
+         <when test="searchType == 'writer'">where title like concat('%', #{searchName}, '%')</when>
+         <when test="searchType == 'titcont'">where title like concat('%', #{searchName}, '%')
+                                    or content like concat ('%', #{searchName}, '%')</when>
+                                    
+         <otherwise>where 1 = 1></otherwise>
+                                    
+      </choose> -->
+  	  	
+  		order by tno desc
+  		limit #{pageStart}, #{amount}
   	</select>
   	
   	<select id="getContent" resultType="TripVO">
@@ -41,6 +77,26 @@
 			  (select tno from trip where tno > #{tno} limit 1))
 		order by tno desc;
 		]]>
+  	</select>
+  	
+  	<select id="getTotal" resultType="int">
+  		select count(*) as total from trip
+  		<if test="searchType == 'title'">
+  	  		where title like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	<if test="searchType == 'content'">
+  	  		where content like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	<if test="searchType == 'writer'">
+  	  		where writer like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	<if test="searchType == 'titlecont'">
+  	  		where title like concat ('%', #{searchName}, '%')
+  	  		or content like concat ('%', #{searchName}, '%')
+  	  	</if>
+  	  	
+  	  	<if test="searchType == null or searchType == ''" >where 1 = 1</if> 
+  	  	
   	</select>
   	
   </mapper>

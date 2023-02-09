@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.whalien207.myweb.command.TripVO;
 import com.whalien207.myweb.trip.service.TripService;
+import com.whalien207.myweb.util.Criteria;
+import com.whalien207.myweb.util.PageVO;
 
 @Controller
 @RequestMapping("/trip")
@@ -29,7 +31,7 @@ public class NoticeController {
 	private TripService tripService;
 
 	@RequestMapping("/notice_list")
-	public String notice_list(Model model) {
+	public String notice_list(Criteria cri ,Model model) {
 
 		/*
 		 * service, mapper영역에 getList 함수를 선언하고
@@ -38,9 +40,31 @@ public class NoticeController {
 		 * 화면에서는 반복문으로 처리.
 		 * 
 		 */
-
-		ArrayList<TripVO> list = tripService.getList();
+		
+		//페이지네이션
+//		int total = tripService.getTotal();
+//		PageVO page = new PageVO(cri, total);
+//		System.out.println(page.toString());
+//		model.addAttribute("page", page);
+		
+		/*
+		 * 페이지 검색처리
+		 * 1. 화면에서는 apge, amount, searchType, searchName을 넘긴다.
+		 * 2. criteria에서 검색값을 받는다.
+		 * 3. sql을 바꾼다. (동적쿼리)
+		 * 4. toitla sql 바꾼다(동적쿼리)
+		 * 5. 페이지 a태그 클릭시 searchType, searchName을 쿼리스트링으로 넘긴다.
+		 * 6. 검색키워드의 유지 
+		 */
+		System.out.println(cri.toString());
+		
+		ArrayList<TripVO> list = tripService.getList(cri);
+		
+		int total = tripService.getTotal(cri);
+		PageVO page = new PageVO(cri, total);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("page", page);
 
 		return "trip/notice_list";
 	}
